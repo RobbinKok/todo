@@ -6,6 +6,16 @@ class HomeScreen extends StatefulWidget {
 }
 
 class Home extends State<HomeScreen> {
+    
+    List<Todo> list = List<Todo>();
+    @override
+    void initState(){
+      list.add(Todo(title: "item a"));
+      list.add(Todo(title: "item b"));
+      list.add(Todo(title: "item c"));
+      super.initState();
+    }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,7 +24,7 @@ class Home extends State<HomeScreen> {
         child: Column(
           children: <Widget>[
             _appbar(),
-            SizedBox(height: 16),
+            SizedBox(height: 5),
             _bodywidget(),
           ],
         ),
@@ -36,7 +46,7 @@ class Home extends State<HomeScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(
-            'Todo(ne)',
+            'Todo',
             style: TextStyle(
                 color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold),
           ),
@@ -52,17 +62,41 @@ class Home extends State<HomeScreen> {
   }
 
   Widget _bodywidget() {
+    
+    
+    
+
+
     return Container(
-      padding: EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
-      height: MediaQuery.of(context).size.height * 1 - 166,
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30), topRight: Radius.circular(30))),
-      child: Column(
-        children: <Widget>[],
-      ),
-    );
+        padding: EdgeInsets.only(left: 16, right: 16, top: 0, bottom: 8),
+        height: MediaQuery.of(context).size.height * 1 - 150,
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+        child: ListView.builder(
+          itemCount: list.length,
+          itemBuilder: (context, index){
+            return ListTile(
+              title: Text(list[index].title),
+              trailing: Icon(Icons.check_box),
+              onTap: () => print(list[index].title),
+            );
+          }
+          ,
+        ),);
   }
+}
+
+class Todo {
+  String title;
+  bool completed;
+
+  Todo(
+    {
+      this.title, 
+      this.completed = false,
+    }
+    );
 }
