@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'todo.dart';
+import 'new_item.view.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -6,20 +8,19 @@ class HomeScreen extends StatefulWidget {
 }
 
 class Home extends State<HomeScreen> {
-    
-    List<Todo> list = List<Todo>();
-    @override
-    void initState(){
-      list.add(Todo(title: "item a"));
-      list.add(Todo(title: "item b"));
-      list.add(Todo(title: "item c"));
-      super.initState();
-    }
+  List<Todo> list = List<Todo>();
+  @override
+  void initState() {
+    list.add(Todo(title: "item a"));
+    list.add(Todo(title: "item b"));
+    list.add(Todo(title: "item c"));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFEFEFF4),
+      backgroundColor: Colors.grey[300],
       body: Container(
         child: Column(
           children: <Widget>[
@@ -29,15 +30,19 @@ class Home extends State<HomeScreen> {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        backgroundColor: Colors.red[500],
+        onPressed: () => goToNewItem(),),
     );
   }
 
   Widget _appbar() {
     return Container(
-      height: 130,
+      height: 115,
       padding: EdgeInsets.only(top: 42, bottom: 16, right: 16, left: 16),
       decoration: BoxDecoration(
-        color: Color(0xFF42A5F5),
+        color: Colors.red[500],
         borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(25), bottomRight: Radius.circular(25)),
       ),
@@ -62,41 +67,68 @@ class Home extends State<HomeScreen> {
   }
 
   Widget _bodywidget() {
-    
-    
-    
-
-
-    return Container(
-        padding: EdgeInsets.only(left: 16, right: 16, top: 0, bottom: 8),
-        height: MediaQuery.of(context).size.height * 1 - 150,
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
+    return SingleChildScrollView(
+      padding: EdgeInsets.only(left: 4, right: 4),
+      child: Container(
+          padding: EdgeInsets.only(left: 16, right: 16, top: 0, bottom: 8),
+          height: MediaQuery.of(context).size.height * 1 - 136,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30), topRight: Radius.circular(30))),
-        child: ListView.builder(
-          itemCount: list.length,
-          itemBuilder: (context, index){
-            return ListTile(
-              title: Text(list[index].title),
-              trailing: Icon(Icons.check_box),
-              onTap: () => print(list[index].title),
-            );
-          }
-          ,
-        ),);
-  }
-}
-
-class Todo {
-  String title;
-  bool completed;
-
-  Todo(
-    {
-      this.title, 
-      this.completed = false,
-    }
+                topLeft: Radius.circular(30),
+                topRight: Radius.circular(30),
+                bottomLeft: Radius.circular(30),
+                bottomRight: Radius.circular(30)),
+          ),
+          child: body()),
     );
+  }
+
+  Widget body() {
+    return ListView.builder(
+      itemCount: list.length,
+      itemBuilder: (context, index) {
+        return Dismissible(
+          key: Key(list[index].hashCode.toString()),
+          onDismissed: (direction) => removeItem(list[index]),
+          direction: DismissDirection.startToEnd,
+          background: Container(
+            color: Colors.red[500],
+            child: Icon(
+              Icons.delete,
+              color: Colors.white,
+            ),
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.only(left: 12.0),
+          ),
+          child: ListTile(
+            title: Text(list[index].title),
+            trailing: Checkbox(value: list[index].completed, onChanged: null),
+            onTap: () => setComplete(list[index]),
+          ),
+        );
+      },
+    );
+  }
+
+  void removeItem(Todo item) {
+    list.remove(item);
+  }
+
+  void setComplete(Todo item) {
+    setState(() {
+      item.completed = !item.completed;
+    });
+  }
+
+void goToNewItem(){
+
+  Navigator.of(context).push(MaterialPageRoute(
+    builder: (context){
+      return NewItemView();
+  })
+  );
+
+  }
 }
