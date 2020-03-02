@@ -1,39 +1,94 @@
 import 'package:flutter/material.dart';
 
-
-class NewItemView extends StatefulWidget{
-  	@override
-    _NewItemViewState createState() => _NewItemViewState();
+class NewItemView extends StatefulWidget {
+  @override
+  _NewItemViewState createState() => _NewItemViewState();
 }
 
-class _NewItemViewState extends State<NewItemView>{
+class _NewItemViewState extends State<NewItemView> {
   TextEditingController textFieldController = TextEditingController();
-  
-  @override
-  Widget build(BuildContext context){
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("New Item"),
-        backgroundColor: Colors.red[500],
-      ),
-      body: Column(
-        children: <Widget>[
-          TextField(
-            controller: textFieldController,
-            onEditingComplete: () => save(),
+       resizeToAvoidBottomPadding: false,
+        backgroundColor: Theme.of(context).backgroundColor,
+        body: Container(
+          child: Column(
+            children: <Widget>[
+              _appbar(),
+              SizedBox(
+                height: 5,
+              ),
+              _body(context)
+            ],
           ),
-          FlatButton(onPressed: () => save(),
-          child: Text("save", style: TextStyle(color: Colors.red[500]),),
-          )
+        ));
+  }
+
+  Widget _appbar() {
+    return Container(
+      height: 115,
+      padding: EdgeInsets.only(top: 42, bottom: 16, left: 16, right: 16),
+      decoration: BoxDecoration(
+          color: Theme.of(context).primaryColor,
+          borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(25),
+              bottomRight: Radius.circular(25))),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            'New Item',
+            style: TextStyle(
+                color: Theme.of(context).accentColor, fontSize: 25, fontWeight: FontWeight.bold),
+          ),
         ],
       ),
     );
-
-
   }
-    void save(){
-      print(textFieldController.text);
-    }
 
+  Widget _body(BuildContext context) {
+    return SingleChildScrollView(
+      padding: EdgeInsets.only(left: 4, right: 4),
+      child: Container(
+        padding: EdgeInsets.only(left: 16, right: 16, top: 0, bottom: 8),
+        height: MediaQuery.of(context).size.height * 1 - 129,
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+            color: Theme.of(context).accentColor,
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30),
+                bottomLeft: Radius.circular(30),
+                bottomRight: Radius.circular(30),
+                topRight: Radius.circular(30))),
+        child: Column(
+          children: <Widget>[
+            TextField(
+              controller: textFieldController,
+              onEditingComplete: () => save(),
+              textAlign: TextAlign.center,
+              decoration: InputDecoration(
+                hintText: 'enter note'
+              ),
+            ),
+            SizedBox(height: 5,),
+            FlatButton(
+              color: Theme.of(context).primaryColor,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+              onPressed: () => save(),
+              child: Text(
+                "save",
+                style: TextStyle(color: Theme.of(context).accentColor),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  void save() {
+    print(textFieldController.text);
+  }
 }

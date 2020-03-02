@@ -20,7 +20,7 @@ class Home extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Theme.of(context).backgroundColor,
       body: Container(
         child: Column(
           children: <Widget>[
@@ -31,9 +31,10 @@ class Home extends State<HomeScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        backgroundColor: Colors.red[500],
-        onPressed: () => goToNewItem(),),
+        child: Icon(Icons.add, color: Theme.of(context).accentColor),
+        backgroundColor: Theme.of(context).primaryColor,
+        onPressed: () => goToNewItem(),
+      ),
     );
   }
 
@@ -42,7 +43,7 @@ class Home extends State<HomeScreen> {
       height: 115,
       padding: EdgeInsets.only(top: 42, bottom: 16, right: 16, left: 16),
       decoration: BoxDecoration(
-        color: Colors.red[500],
+        color: Theme.of(context).primaryColor,
         borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(25), bottomRight: Radius.circular(25)),
       ),
@@ -53,12 +54,14 @@ class Home extends State<HomeScreen> {
           Text(
             'Todo',
             style: TextStyle(
-                color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold),
+                color: Theme.of(context).accentColor,
+                fontSize: 25,
+                fontWeight: FontWeight.bold),
           ),
           IconButton(
               icon: Icon(
                 Icons.settings,
-                color: Colors.white,
+                color: Theme.of(context).accentColor,
               ),
               onPressed: () {})
         ],
@@ -71,10 +74,10 @@ class Home extends State<HomeScreen> {
       padding: EdgeInsets.only(left: 4, right: 4),
       child: Container(
           padding: EdgeInsets.only(left: 16, right: 16, top: 0, bottom: 8),
-          height: MediaQuery.of(context).size.height * 1 - 136,
+          height: MediaQuery.of(context).size.height * 1 - 129,
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).accentColor,
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(30),
                 topRight: Radius.circular(30),
@@ -94,10 +97,10 @@ class Home extends State<HomeScreen> {
           onDismissed: (direction) => removeItem(list[index]),
           direction: DismissDirection.startToEnd,
           background: Container(
-            color: Colors.red[500],
+            color: Theme.of(context).primaryColor,
             child: Icon(
               Icons.delete,
-              color: Colors.white,
+              color: Theme.of(context).accentColor,
             ),
             alignment: Alignment.centerLeft,
             padding: EdgeInsets.only(left: 12.0),
@@ -122,13 +125,9 @@ class Home extends State<HomeScreen> {
     });
   }
 
-void goToNewItem(){
-
-  Navigator.of(context).push(MaterialPageRoute(
-    builder: (context){
+  void goToNewItem() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
       return NewItemView();
-  })
-  );
-
+    }));
   }
 }
