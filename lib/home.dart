@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'todo.dart';
 import 'new_item.view.dart';
 
@@ -9,12 +11,20 @@ class HomeScreen extends StatefulWidget {
 
 class Home extends State<HomeScreen> {
   List<Todo> list = List<Todo>();
+  SharedPreferences sharedPreferences;
+
   @override
   void initState() {
+    initSharedPrefrence();
+
     list.add(Todo(title: "item a"));
     list.add(Todo(title: "item b"));
     list.add(Todo(title: "item c"));
     super.initState();
+  }
+
+  initSharedPrefrence() async{
+    sharedPreferences = await SharedPreferences.getInstance();
   }
 
   @override
@@ -128,6 +138,21 @@ class Home extends State<HomeScreen> {
   void goToNewItem() {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
       return NewItemView();
-    }));
+    })).then((title) {
+      if (title != null) {
+        newTodo(Todo(title: title));
+      }
+    });
+  }
+
+  void newTodo(Todo item) {
+    list.add(item);
+    dataSave();
+  }
+
+  void dataSave(){
+
+    List<String> sharedPrefList = list.map((item) => jsonEncode( item.topMap())).toList();
+    print(sharedPrefList);
   }
 }

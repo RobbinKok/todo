@@ -89,6 +89,8 @@ class _NewItemViewState extends State<NewItemView> {
   }
 
   void save() {
-    print(textFieldController.text);
+    if(textFieldController.text.isNotEmpty){
+    Navigator.of(context).pop(textFieldController.text);
+    }
   }
 }

@@ -8,4 +8,15 @@ class Todo {
       this.completed = false,
     }
     );
+
+    Todo.fromMap(Map map) :
+      this.title = map['title'],
+      this.completed = map['completed'];
+
+  Map topMap(){
+    return {
+      'title' : this.title,
+      'completed' : this.completed,
+    };
+  }
 }
