@@ -16,15 +16,12 @@ class Home extends State<HomeScreen> {
   @override
   void initState() {
     initSharedPrefrence();
-
-    list.add(Todo(title: "item a"));
-    list.add(Todo(title: "item b"));
-    list.add(Todo(title: "item c"));
     super.initState();
   }
 
   initSharedPrefrence() async{
     sharedPreferences = await SharedPreferences.getInstance();
+    dataLoad();
   }
 
   @override
@@ -153,6 +150,13 @@ class Home extends State<HomeScreen> {
   void dataSave(){
 
     List<String> sharedPrefList = list.map((item) => jsonEncode( item.topMap())).toList();
-    print(sharedPrefList);
+    sharedPreferences.setStringList('list', sharedPrefList);
+  }
+
+  void dataLoad(){
+
+   List<String> sharedPrefList = sharedPreferences.getStringList('list');
+   list = sharedPrefList.map((item) => Todo.fromMap(jsonDecode(item))).toList();
+   setState(() {});
   }
 }

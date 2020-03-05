@@ -65,6 +65,7 @@ class _NewItemViewState extends State<NewItemView> {
         child: Column(
           children: <Widget>[
             TextField(
+              autofocus: true,
               controller: textFieldController,
               onEditingComplete: () => save(),
               textAlign: TextAlign.center,
