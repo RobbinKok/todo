@@ -19,7 +19,7 @@ class Home extends State<HomeScreen> {
     super.initState();
   }
 
-  initSharedPrefrence() async{
+  initSharedPrefrence() async {
     sharedPreferences = await SharedPreferences.getInstance();
     dataLoad();
   }
@@ -70,7 +70,7 @@ class Home extends State<HomeScreen> {
                 Icons.settings,
                 color: Theme.of(context).accentColor,
               ),
-              onPressed: () {})
+              onPressed: () => _buttonPress())
         ],
       ),
     );
@@ -147,16 +147,38 @@ class Home extends State<HomeScreen> {
     dataSave();
   }
 
-  void dataSave(){
-
-    List<String> sharedPrefList = list.map((item) => jsonEncode( item.topMap())).toList();
+  void dataSave() {
+    List<String> sharedPrefList =
+        list.map((item) => jsonEncode(item.topMap())).toList();
     sharedPreferences.setStringList('list', sharedPrefList);
   }
 
-  void dataLoad(){
+  void dataLoad() {
+    List<String> sharedPrefList = sharedPreferences.getStringList('list');
+    list =
+        sharedPrefList.map((item) => Todo.fromMap(jsonDecode(item))).toList();
+    setState(() {});
+  }
 
-   List<String> sharedPrefList = sharedPreferences.getStringList('list');
-   list = sharedPrefList.map((item) => Todo.fromMap(jsonDecode(item))).toList();
-   setState(() {});
+  void _buttonPress() {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+            color: Color(0xFF737373),
+            padding: EdgeInsets.only(left: 4, right: 4),
+            child: Container(
+              padding: EdgeInsets.only(left: 4, right: 4),
+              decoration: BoxDecoration(
+                  color: Theme.of(context).accentColor,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(25),
+                      topRight: Radius.circular(25))),
+              child: Column(
+                children: <Widget>[],
+              ),
+            ),
+          );
+        });
   }
 }
