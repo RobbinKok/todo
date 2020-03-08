@@ -12,6 +12,7 @@ class HomeScreen extends StatefulWidget {
 class Home extends State<HomeScreen> {
   List<Todo> list = List<Todo>();
   SharedPreferences sharedPreferences;
+  TextEditingController textFieldController = TextEditingController();
 
   @override
   void initState() {
@@ -27,6 +28,7 @@ class Home extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       backgroundColor: Theme.of(context).backgroundColor,
       body: Container(
         child: Column(
@@ -40,7 +42,7 @@ class Home extends State<HomeScreen> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add, color: Theme.of(context).accentColor),
         backgroundColor: Theme.of(context).primaryColor,
-        onPressed: () => goToNewItem(),
+        onPressed: () => _buttonPress(),
       ),
     );
   }
@@ -70,7 +72,7 @@ class Home extends State<HomeScreen> {
                 Icons.settings,
                 color: Theme.of(context).accentColor,
               ),
-              onPressed: () => _buttonPress())
+              onPressed: () => goToNewItem())
         ],
       ),
     );
@@ -134,7 +136,7 @@ class Home extends State<HomeScreen> {
 
   void goToNewItem() {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      return NewItemView();
+      return NewItemView() ;
     })).then((title) {
       if (title != null) {
         newTodo(Todo(title: title));
@@ -160,7 +162,7 @@ class Home extends State<HomeScreen> {
     setState(() {});
   }
 
-  void _buttonPress() {
+  Widget _buttonPress() {
     showModalBottomSheet(
         context: context,
         builder: (context) {
@@ -175,10 +177,39 @@ class Home extends State<HomeScreen> {
                       topLeft: Radius.circular(25),
                       topRight: Radius.circular(25))),
               child: Column(
-                children: <Widget>[],
+                children: <Widget>[
+                  TextField(
+                    autofocus: true,
+                    controller: textFieldController,
+                    onEditingComplete: () => save(),
+                    textAlign: TextAlign.center,
+                    decoration: InputDecoration(hintText: 'enter note'),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  FlatButton(
+                    color: Theme.of(context).primaryColor,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30)),
+                    onPressed: () => save(),
+                    child: Text(
+                      "save",
+                      style: TextStyle(color: Theme.of(context).accentColor),
+                    ),
+                  )
+                ],
               ),
             ),
           );
         });
+  }
+
+  void save() {
+    if (textFieldController.text.isNotEmpty) {
+      Navigator.of(context).pop(textFieldController.text);
+      newTodo(Todo(title: textFieldController.text));
+      textFieldController.clear();
+    }
   }
 }
