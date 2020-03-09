@@ -66,13 +66,13 @@ class Home extends State<HomeScreen> {
                 color: Theme.of(context).accentColor,
                 fontSize: 25,
                 fontWeight: FontWeight.bold),
-          ),
+          ),/*
           IconButton(
               icon: Icon(
                 Icons.settings,
                 color: Theme.of(context).accentColor,
               ),
-              onPressed: () => goToNewItem())
+              onPressed: () => goToNewItem())*/
         ],
       ),
     );
@@ -166,9 +166,12 @@ class Home extends State<HomeScreen> {
 
   void _buttonPress() {
     showModalBottomSheet(
+      backgroundColor: Colors.black.withOpacity(0.1),
+      isScrollControlled: true,
         context: context,
         builder: (context) {
           return Container(
+            height: 400,
             color: Color(0xFF737373),
             padding: EdgeInsets.only(left: 4, right: 4),
             child: Container(
@@ -179,6 +182,7 @@ class Home extends State<HomeScreen> {
                       topLeft: Radius.circular(25),
                       topRight: Radius.circular(25))),
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   TextField(
                     autofocus: true,
@@ -190,7 +194,7 @@ class Home extends State<HomeScreen> {
                   SizedBox(
                     height: 5,
                   ),
-                  FlatButton(
+                  FlatButton(                    
                     color: Theme.of(context).primaryColor,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30)),
@@ -199,6 +203,9 @@ class Home extends State<HomeScreen> {
                       "save",
                       style: TextStyle(color: Theme.of(context).accentColor),
                     ),
+                  ),
+                  SizedBox(
+                    height: 10,
                   )
                 ],
               ),
