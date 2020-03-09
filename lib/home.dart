@@ -126,6 +126,8 @@ class Home extends State<HomeScreen> {
 
   void removeItem(Todo item) {
     list.remove(item);
+    dataSave();
+    setState(() {});
   }
 
   void setComplete(Todo item) {
@@ -162,7 +164,7 @@ class Home extends State<HomeScreen> {
     setState(() {});
   }
 
-  Widget _buttonPress() {
+  void _buttonPress() {
     showModalBottomSheet(
         context: context,
         builder: (context) {
