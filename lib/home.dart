@@ -11,6 +11,7 @@ class HomeScreen extends StatefulWidget {
 
 class Home extends State<HomeScreen> {
   List<Todo> list = List<Todo>();
+  List<Todo> done = List<Todo>();
   SharedPreferences sharedPreferences;
   TextEditingController textFieldController = TextEditingController();
 
@@ -35,7 +36,7 @@ class Home extends State<HomeScreen> {
           children: <Widget>[
             _appbar(),
             SizedBox(height: 5),
-            _bodywidget(),
+            list.isNotEmpty ? _bodywidget() : empty(),
           ],
         ),
       ),
@@ -118,10 +119,33 @@ class Home extends State<HomeScreen> {
             title: Text(list[index].title),
             trailing: Checkbox(value: list[index].completed, onChanged: null),
             onTap: () => setComplete(list[index]),
+            //onLongPress: () => editTodo(list[index], "taq"),
           ),
         );
       },
     );
+  }
+
+  Widget empty() {
+    return SingleChildScrollView(
+      padding: EdgeInsets.only(left: 4, right: 4),
+      child: Container(
+        padding: EdgeInsets.only(left: 16, right: 16, top: 0, bottom: 8),
+        height: MediaQuery.of(context).size.height * 1 - 129,
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+          color: Theme.of(context).accentColor,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(30),
+              bottomLeft: Radius.circular(30),
+              bottomRight: Radius.circular(30)),
+        ),
+        child: Center(child: ListTile(
+          title: Text('Wow such empty', textAlign: TextAlign.center,),
+        ),
+      ),
+    ));
   }
 
   void removeItem(Todo item) {
@@ -136,9 +160,25 @@ class Home extends State<HomeScreen> {
     });
   }
 
+/*
+  void goEditItem(Todo item){
+       Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return NewItemView(Todo(title: item[index])) ;
+    })).then((title) {
+      if (title != null) {
+        newTodo(Todo(title: title));
+      }
+    });
+  }
+*/
+  void editTodo(Todo item, String title) {
+    item.title = title;
+    setState(() {});
+  }
+
   void goToNewItem() {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      return NewItemView() ;
+      return NewItemView();
     })).then((title) {
       if (title != null) {
         newTodo(Todo(title: title));
