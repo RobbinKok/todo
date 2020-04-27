@@ -16,11 +16,21 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          primarySwatch: Colors.red,
+          brightness: Brightness.light,
+          primaryColor: Colors.red,
           accentColor: Colors.white,
+          textSelectionColor: Colors.white,
           backgroundColor: Colors.grey[300]
           //        brightness: Brightness.light
           ),
+          /*
+        darkTheme: ThemeData(
+          brightness: Brightness.dark,
+          primaryColor: Colors.red,
+           textSelectionColor: Colors.white,
+          accentColor: Colors.grey[800],
+          backgroundColor: Colors.grey[900]
+        ),*/
       home: HomeScreen(),
     );
   }

@@ -41,7 +41,7 @@ class Home extends State<HomeScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add, color: Theme.of(context).accentColor),
+        child: Icon(Icons.add, color: Theme.of(context).textSelectionColor),
         backgroundColor: Theme.of(context).primaryColor,
         onPressed: () => _buttonPress(),
       ),
@@ -64,16 +64,17 @@ class Home extends State<HomeScreen> {
           Text(
             'Todo',
             style: TextStyle(
-                color: Theme.of(context).accentColor,
+                color: Theme.of(context).textSelectionColor,
                 fontSize: 25,
                 fontWeight: FontWeight.bold),
           ),
-          IconButton(
-              icon: Icon(
-                Icons.settings,
-                color: Theme.of(context).accentColor,
-              ),
-              onPressed: () => goToNewItem())
+          /*IconButton(
+            icon: Icon(
+              Icons.settings,
+              color: Theme.of(context).textSelectionColor,
+            ),
+            onPressed: () => goToNewItem(),
+          )*/
         ],
       ),
     );
@@ -110,7 +111,7 @@ class Home extends State<HomeScreen> {
             color: Theme.of(context).primaryColor,
             child: Icon(
               Icons.delete,
-              color: Theme.of(context).accentColor,
+              color: Theme.of(context).textSelectionColor,
             ),
             alignment: Alignment.centerLeft,
             padding: EdgeInsets.only(left: 12.0),
@@ -128,24 +129,28 @@ class Home extends State<HomeScreen> {
 
   Widget empty() {
     return SingleChildScrollView(
-      padding: EdgeInsets.only(left: 4, right: 4),
-      child: Container(
-        padding: EdgeInsets.only(left: 16, right: 16, top: 0, bottom: 8),
-        height: MediaQuery.of(context).size.height * 1 - 129,
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          color: Theme.of(context).accentColor,
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30),
-              topRight: Radius.circular(30),
-              bottomLeft: Radius.circular(30),
-              bottomRight: Radius.circular(30)),
-        ),
-        child: Center(child: ListTile(
-          title: Text('Wow such empty', textAlign: TextAlign.center,),
-        ),
-      ),
-    ));
+        padding: EdgeInsets.only(left: 4, right: 4),
+        child: Container(
+          padding: EdgeInsets.only(left: 16, right: 16, top: 0, bottom: 8),
+          height: MediaQuery.of(context).size.height * 1 - 129,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            color: Theme.of(context).textSelectionColor,
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30),
+                topRight: Radius.circular(30),
+                bottomLeft: Radius.circular(30),
+                bottomRight: Radius.circular(30)),
+          ),
+          child: Center(
+            child: ListTile(
+              title: Text(
+                'There are no items to display here',
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+        ));
   }
 
   void removeItem(Todo item) {
@@ -225,7 +230,8 @@ class Home extends State<HomeScreen> {
                     controller: textFieldController,
                     onEditingComplete: () => save(),
                     textAlign: TextAlign.center,
-                    decoration: InputDecoration(hintText: 'enter note'),
+                    decoration: InputDecoration(hintText: 'enter note',),
+                    
                   ),
                   SizedBox(
                     height: 5,
@@ -237,7 +243,7 @@ class Home extends State<HomeScreen> {
                     onPressed: () => save(),
                     child: Text(
                       "save",
-                      style: TextStyle(color: Theme.of(context).accentColor),
+                      style: TextStyle(color: Theme.of(context).textSelectionColor),
                     ),
                   )
                 ],
