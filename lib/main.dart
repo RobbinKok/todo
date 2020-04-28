@@ -20,7 +20,8 @@ class MyApp extends StatelessWidget {
           primaryColor: Colors.red,
           accentColor: Colors.white,
           textSelectionColor: Colors.white,
-          backgroundColor: Colors.grey[300]
+          backgroundColor: Colors.grey[300],
+          canvasColor: Colors.transparent
           //        brightness: Brightness.light
           ),
           /*

@@ -214,7 +214,7 @@ class Home extends State<HomeScreen> {
         context: context,
         builder: (context) {
           return Container(
-            color: Color(0xFF737373),
+            color: Colors.transparent,
             padding: EdgeInsets.only(left: 4, right: 4),
             child: Container(
               padding: EdgeInsets.only(left: 4, right: 4),
@@ -230,7 +230,7 @@ class Home extends State<HomeScreen> {
                     controller: textFieldController,
                     onEditingComplete: () => save(),
                     textAlign: TextAlign.center,
-                    decoration: InputDecoration(hintText: 'enter note',),
+                    decoration: InputDecoration(hintText: 'Enter a note here',),
                     
                   ),
                   SizedBox(
