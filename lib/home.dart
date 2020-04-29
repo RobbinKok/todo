@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'todo.dart';
@@ -105,8 +106,8 @@ class Home extends State<HomeScreen> {
       itemBuilder: (context, index) {
         return Dismissible(
           key: Key(list[index].hashCode.toString()),
-          onDismissed: (direction) => removeItem(list[index]),
           direction: DismissDirection.startToEnd,
+          onDismissed: (direction) => removeItem(list[index]),
           background: Container(
             color: Theme.of(context).primaryColor,
             child: Icon(
@@ -116,11 +117,20 @@ class Home extends State<HomeScreen> {
             alignment: Alignment.centerLeft,
             padding: EdgeInsets.only(left: 12.0),
           ),
+          secondaryBackground: Container(
+            color: Colors.yellow[600],
+            child: Icon(
+              Icons.edit,
+              color: Theme.of(context).textSelectionColor,
+            ),
+            alignment: Alignment.centerRight,
+            padding: EdgeInsets.only(right: 12.0),
+          ),
           child: ListTile(
             title: Text(list[index].title),
             trailing: Checkbox(value: list[index].completed, onChanged: null),
             onTap: () => setComplete(list[index]),
-            onLongPress: () => goEditItem(list[index]),
+            onLongPress: () => editOnSwipe(list[index]),
             //onLongPress: () => editTodo(list[index], "taq"),
           ),
         );
@@ -146,7 +156,7 @@ class Home extends State<HomeScreen> {
           child: Center(
             child: ListTile(
               title: Text(
-                'There are no items to display here right now.',
+                'There are no items to display here right now. \n Press the + icon to add an new item.\n Swip form left to right to delete the item \n Press and hold the new item to edit it.',
                 textAlign: TextAlign.center,
               ),
             ),
@@ -156,8 +166,8 @@ class Home extends State<HomeScreen> {
 
   void removeItem(Todo item) {
     list.remove(item);
-    dataSave();
     setState(() {});
+    dataSave();
   }
 
   void setComplete(Todo item) {
@@ -166,8 +176,7 @@ class Home extends State<HomeScreen> {
     });
   }
 
-
-  void goEditItem(Todo item){
+  void goEditItem(Todo item) {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
       return NewItemView(title: item.title);
     })).then((title) {
@@ -210,6 +219,24 @@ class Home extends State<HomeScreen> {
     setState(() {});
   }
 
+  void save() {
+    if (textFieldController.text.isNotEmpty) {
+      Navigator.of(context).pop(textFieldController.text);
+      newTodo(Todo(title: textFieldController.text));
+      textFieldController.clear();
+    }
+  }
+
+  void editTodoItem(Todo item) {
+    if (textFieldController.text.isNotEmpty) {
+      Navigator.of(context).pop(textFieldController.text);
+      String title = textFieldController.text;
+      editTodo(item, title);
+      textFieldController.clear();
+      setState(() {});
+    }
+  }
+
   void _buttonPress() {
     showModalBottomSheet(
         context: context,
@@ -231,8 +258,9 @@ class Home extends State<HomeScreen> {
                     controller: textFieldController,
                     onEditingComplete: () => save(),
                     textAlign: TextAlign.center,
-                    decoration: InputDecoration(hintText: 'Enter a note here',),
-                    
+                    decoration: InputDecoration(
+                      hintText: 'Enter a note here',
+                    ),
                   ),
                   SizedBox(
                     height: 5,
@@ -244,7 +272,8 @@ class Home extends State<HomeScreen> {
                     onPressed: () => save(),
                     child: Text(
                       "save",
-                      style: TextStyle(color: Theme.of(context).textSelectionColor),
+                      style: TextStyle(
+                          color: Theme.of(context).textSelectionColor),
                     ),
                   )
                 ],
@@ -254,11 +283,52 @@ class Home extends State<HomeScreen> {
         });
   }
 
-  void save() {
-    if (textFieldController.text.isNotEmpty) {
-      Navigator.of(context).pop(textFieldController.text);
-      newTodo(Todo(title: textFieldController.text));
-      textFieldController.clear();
-    }
+  void editOnSwipe(Todo item) {
+    textFieldController = TextEditingController(text: item.title);
+    //String title;
+    //title = item.title;
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+            color: Colors.transparent,
+            padding: EdgeInsets.only(left: 4, right: 4),
+            child: Container(
+              padding: EdgeInsets.only(left: 4, right: 4),
+              decoration: BoxDecoration(
+                  color: Theme.of(context).accentColor,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(25),
+                      topRight: Radius.circular(25))),
+              child: Column(
+                children: <Widget>[
+                  TextField(
+                    autofocus: true,
+                    controller: textFieldController,
+                    onEditingComplete: () => save(),
+                    textAlign: TextAlign.center,
+                    decoration: InputDecoration(
+                      hintText: 'Enter a note here',
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  FlatButton(
+                    color: Theme.of(context).primaryColor,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30)),
+                    onPressed: () => editTodoItem(item),
+                    child: Text(
+                      "save",
+                      style: TextStyle(
+                          color: Theme.of(context).textSelectionColor),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+        });
   }
 }
