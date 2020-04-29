@@ -120,6 +120,7 @@ class Home extends State<HomeScreen> {
             title: Text(list[index].title),
             trailing: Checkbox(value: list[index].completed, onChanged: null),
             onTap: () => setComplete(list[index]),
+            onLongPress: () => goEditItem(list[index]),
             //onLongPress: () => editTodo(list[index], "taq"),
           ),
         );
@@ -145,7 +146,7 @@ class Home extends State<HomeScreen> {
           child: Center(
             child: ListTile(
               title: Text(
-                'There are no items to display here',
+                'There are no items to display here right now.',
                 textAlign: TextAlign.center,
               ),
             ),
@@ -165,17 +166,17 @@ class Home extends State<HomeScreen> {
     });
   }
 
-/*
+
   void goEditItem(Todo item){
-       Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      return NewItemView(Todo(title: item[index])) ;
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return NewItemView(title: item.title);
     })).then((title) {
       if (title != null) {
-        newTodo(Todo(title: title));
+        editTodo(item, title);
       }
     });
   }
-*/
+
   void editTodo(Todo item, String title) {
     item.title = title;
     setState(() {});

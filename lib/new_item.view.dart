@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 
 class NewItemView extends StatefulWidget {
+  String title;
+
+  NewItemView({this.title});
+  
   @override
   _NewItemViewState createState() => _NewItemViewState();
 }
 
 class _NewItemViewState extends State<NewItemView> {
-  TextEditingController textFieldController = TextEditingController();
+  TextEditingController textFieldController;
+  @override
+  void initState(){
+    textFieldController = TextEditingController(text: widget.title);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
