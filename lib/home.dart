@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'todo.dart';
@@ -69,13 +68,13 @@ class Home extends State<HomeScreen> {
                 fontSize: 25,
                 fontWeight: FontWeight.bold),
           ),
-          /*IconButton(
+          IconButton(
             icon: Icon(
-              Icons.settings,
+              Icons.info_outline,
               color: Theme.of(context).textSelectionColor,
             ),
-            onPressed: () => goToNewItem(),
-          )*/
+            onPressed: () => showHelpSheet(),
+          )
         ],
       ),
     );
@@ -156,7 +155,7 @@ class Home extends State<HomeScreen> {
           child: Center(
             child: ListTile(
               title: Text(
-                'There are no items to display here right now. \n Press the + icon to add an new item.\n Swip form left to right to delete the item \n Press and hold the new item to edit it.',
+                'There are no items to display here right now.',
                 textAlign: TextAlign.center,
               ),
             ),
@@ -285,8 +284,6 @@ class Home extends State<HomeScreen> {
 
   void editOnSwipe(Todo item) {
     textFieldController = TextEditingController(text: item.title);
-    //String title;
-    //title = item.title;
     showModalBottomSheet(
         context: context,
         builder: (context) {
@@ -305,7 +302,7 @@ class Home extends State<HomeScreen> {
                   TextField(
                     autofocus: true,
                     controller: textFieldController,
-                    onEditingComplete: () => save(),
+                    onEditingComplete: () => editTodoItem(item),
                     textAlign: TextAlign.center,
                     decoration: InputDecoration(
                       hintText: 'Enter a note here',
@@ -328,6 +325,33 @@ class Home extends State<HomeScreen> {
                 ],
               ),
             ),
+          );
+        });
+  }
+
+  void showHelpSheet() {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+            height: 120,
+            color: Colors.transparent,
+            padding: EdgeInsets.only(left: 0, right: 0),
+            child: Container(
+                padding: EdgeInsets.only(left: 0, right: 0),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).accentColor,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(25),
+                      topRight: Radius.circular(25)),
+                ),
+                child: Center(
+                  child: Text(
+                    'Press the + icon to add an new item.\n Swipe from left to right to delete the item \n Press and hold the new item to edit it.',
+                    style: TextStyle(fontSize: 16),
+                    textAlign: TextAlign.center,
+                  ),
+                )),
           );
         });
   }
