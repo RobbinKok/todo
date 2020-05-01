@@ -1,16 +1,10 @@
 # todo
 
-A new Flutter project.
+A simple todo app.
 
-## Getting Started
+## About
 
-This project is a starting point for a Flutter application.
+I made the app, because I am learning flutter and wanted to challenge myself. 
+I decided to make an todo app, because I wanted a todo app in wich i have controll over my own data.
+All the data is stored localy and the app doesn't connect to the internet.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
