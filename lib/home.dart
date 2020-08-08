@@ -126,7 +126,14 @@ class Home extends State<HomeScreen> {
             padding: EdgeInsets.only(right: 12.0),
           ),
           child: ListTile(
-            title: Text(list[index].title, style: list[index].completed ? TextStyle(decoration: TextDecoration.lineThrough, color: Colors.grey) : TextStyle() ,),
+            title: Text(
+              list[index].title,
+              style: list[index].completed
+                  ? TextStyle(
+                      decoration: TextDecoration.lineThrough,
+                      color: Colors.grey)
+                  : TextStyle(),
+            ),
             trailing: Checkbox(value: list[index].completed, onChanged: null),
             onTap: () => setComplete(list[index]),
             onLongPress: () => editOnSwipe(list[index]),
@@ -145,7 +152,7 @@ class Home extends State<HomeScreen> {
           height: MediaQuery.of(context).size.height * 1 - 129,
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
-            color: Theme.of(context).textSelectionColor,
+            color: Theme.of(context).accentColor,
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(30),
                 topRight: Radius.circular(30),
@@ -171,7 +178,7 @@ class Home extends State<HomeScreen> {
 
   void setComplete(Todo item) {
     setState(() {});
-      item.completed = !item.completed;
+    item.completed = !item.completed;
     setState(() {});
     dataSave();
   }

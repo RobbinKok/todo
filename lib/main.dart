@@ -1,6 +1,8 @@
+//package imports
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+//custom imports
 import 'package:todo/home.dart';
 
 void main() => runApp(MyApp());
@@ -24,14 +26,13 @@ class MyApp extends StatelessWidget {
           canvasColor: Colors.transparent
           //        brightness: Brightness.light
           ),
-          /*
-        darkTheme: ThemeData(
+      darkTheme: ThemeData(
           brightness: Brightness.dark,
           primaryColor: Colors.red,
-           textSelectionColor: Colors.white,
+          textSelectionColor: Colors.white,
           accentColor: Colors.grey[800],
-          backgroundColor: Colors.grey[900]
-        ),*/
+          backgroundColor: Colors.grey[900],
+          canvasColor: Colors.transparent),
       home: HomeScreen(),
     );
   }
