@@ -104,9 +104,15 @@ class Home extends State<HomeScreen> {
       itemCount: list.length,
       itemBuilder: (context, index) {
         return Dismissible(
-          key: Key(list[index].hashCode.toString()),
-          direction: DismissDirection.startToEnd,
-          onDismissed: (direction) => removeItem(list[index]),
+          key: Key(list[index].toString()),
+          onDismissed: (direction) {
+            if (direction == DismissDirection.startToEnd) {
+              removeItem(list[index]);
+            } else {
+              archieveItem(list[index]);
+            }
+          },
+          //=> removeItem(list[index]),
           background: Container(
             color: Theme.of(context).primaryColor,
             child: Icon(
@@ -117,9 +123,9 @@ class Home extends State<HomeScreen> {
             padding: EdgeInsets.only(left: 12.0),
           ),
           secondaryBackground: Container(
-            color: Colors.yellow[600],
+            color: Colors.green[500],
             child: Icon(
-              Icons.edit,
+              Icons.archive,
               color: Theme.of(context).textSelectionColor,
             ),
             alignment: Alignment.centerRight,
@@ -171,6 +177,13 @@ class Home extends State<HomeScreen> {
   }
 
   void removeItem(Todo item) {
+    list.remove(item);
+    setState(() {});
+    dataSave();
+  }
+
+  void archieveItem(Todo item) {
+    done.add(item);
     list.remove(item);
     setState(() {});
     dataSave();
