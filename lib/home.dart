@@ -36,7 +36,7 @@ class Home extends State<HomeScreen> {
           children: <Widget>[
             _appbar(),
             SizedBox(height: 5),
-            list.isNotEmpty ? _bodywidget() : empty(),
+            /*list.isNotEmpty ?*/ _bodywidget() // : empty(),
           ],
         ),
       ),
@@ -81,9 +81,11 @@ class Home extends State<HomeScreen> {
   }
 
   Widget _bodywidget() {
-    return SingleChildScrollView(
-      padding: EdgeInsets.only(left: 4, right: 4),
-      child: Container(
+    return DefaultTabController(
+      length: 2,
+      child: SingleChildScrollView(
+        padding: EdgeInsets.only(left: 4, right: 4),
+        child: Container(
           padding: EdgeInsets.only(left: 16, right: 16, top: 0, bottom: 8),
           height: MediaQuery.of(context).size.height * 1 - 129,
           width: MediaQuery.of(context).size.width,
@@ -95,11 +97,26 @@ class Home extends State<HomeScreen> {
                 bottomLeft: Radius.circular(30),
                 bottomRight: Radius.circular(30)),
           ),
-          child: body()),
+          child: Scaffold(
+            appBar: TabBar(
+              tabs: [
+                Tab(text: 'Todo items'),
+                Tab(
+                  text: 'Archive',
+                )
+              ],
+            ),
+            body: TabBarView(children: [
+              list.isNotEmpty ? itemBody() : empty(),
+              done.isNotEmpty ? doneBody() : empty()
+            ]),
+          ),
+        ),
+      ),
     );
   }
 
-  Widget body() {
+  Widget itemBody() {
     return ListView.builder(
       itemCount: list.length,
       itemBuilder: (context, index) {
@@ -150,6 +167,57 @@ class Home extends State<HomeScreen> {
     );
   }
 
+  Widget doneBody() {
+    return ListView.builder(
+      itemCount: done.length,
+      itemBuilder: (context, index) {
+        return Dismissible(
+          key: Key(done[index].toString()),
+          onDismissed: (direction) {
+            if (direction == DismissDirection.startToEnd) {
+              removeDoneItem(done[index]);
+            } else {
+              unArchieveItem(done[index]);
+            }
+          },
+          //=> removeItem(list[index]),
+          background: Container(
+            color: Theme.of(context).primaryColor,
+            child: Icon(
+              Icons.delete,
+              color: Theme.of(context).textSelectionColor,
+            ),
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.only(left: 12.0),
+          ),
+          secondaryBackground: Container(
+            color: Colors.green[500],
+            child: Icon(
+              Icons.unarchive,
+              color: Theme.of(context).textSelectionColor,
+            ),
+            alignment: Alignment.centerRight,
+            padding: EdgeInsets.only(right: 12.0),
+          ),
+          child: ListTile(
+            title: Text(
+              done[index].title,
+              style: done[index].completed
+                  ? TextStyle(
+                      decoration: TextDecoration.lineThrough,
+                      color: Colors.grey)
+                  : TextStyle(),
+            ),
+            trailing: Checkbox(value: done[index].completed, onChanged: null),
+            onTap: () => setComplete(done[index]),
+            onLongPress: () => editOnSwipe(done[index]),
+            //onLongPress: () => editTodo(list[index], "taq"),
+          ),
+        );
+      },
+    );
+  }
+
   Widget empty() {
     return SingleChildScrollView(
         padding: EdgeInsets.only(left: 4, right: 4),
@@ -182,9 +250,22 @@ class Home extends State<HomeScreen> {
     dataSave();
   }
 
+  void removeDoneItem(Todo item) {
+    done.remove(item);
+    setState(() {});
+    dataSave();
+  }
+
   void archieveItem(Todo item) {
     done.add(item);
     list.remove(item);
+    setState(() {});
+    dataSave();
+  }
+
+  void unArchieveItem(Todo item) {
+    list.add(item);
+    done.remove(item);
     setState(() {});
     dataSave();
   }
