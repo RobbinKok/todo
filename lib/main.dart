@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
           accentColor: Colors.white,
           textSelectionColor: Colors.white,
           backgroundColor: Colors.grey[300],
+          indicatorColor: Colors.grey[900],
           canvasColor: Colors.transparent
           //        brightness: Brightness.light
           ),
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
           textSelectionColor: Colors.white,
           accentColor: Colors.grey[800],
           backgroundColor: Colors.grey[900],
+          indicatorColor: Colors.white,
           canvasColor: Colors.transparent),
       home: HomeScreen(),
     );

@@ -4,7 +4,7 @@ class NewItemView extends StatefulWidget {
   String title;
 
   NewItemView({this.title});
-  
+
   @override
   _NewItemViewState createState() => _NewItemViewState();
 }
@@ -12,7 +12,7 @@ class NewItemView extends StatefulWidget {
 class _NewItemViewState extends State<NewItemView> {
   TextEditingController textFieldController;
   @override
-  void initState(){
+  void initState() {
     textFieldController = TextEditingController(text: widget.title);
     super.initState();
   }
@@ -20,7 +20,7 @@ class _NewItemViewState extends State<NewItemView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       resizeToAvoidBottomPadding: false,
+        resizeToAvoidBottomPadding: false,
         backgroundColor: Theme.of(context).backgroundColor,
         body: Container(
           child: Column(
@@ -50,7 +50,9 @@ class _NewItemViewState extends State<NewItemView> {
           Text(
             'New Item',
             style: TextStyle(
-                color: Theme.of(context).accentColor, fontSize: 25, fontWeight: FontWeight.bold),
+                color: Theme.of(context).accentColor,
+                fontSize: 25,
+                fontWeight: FontWeight.bold),
           ),
         ],
       ),
@@ -78,14 +80,15 @@ class _NewItemViewState extends State<NewItemView> {
               controller: textFieldController,
               onEditingComplete: () => save(),
               textAlign: TextAlign.center,
-              decoration: InputDecoration(
-                hintText: 'enter note'
-              ),
+              decoration: InputDecoration(hintText: 'enter note'),
             ),
-            SizedBox(height: 5,),
+            SizedBox(
+              height: 5,
+            ),
             FlatButton(
               color: Theme.of(context).primaryColor,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30)),
               onPressed: () => save(),
               child: Text(
                 "save",
@@ -99,8 +102,8 @@ class _NewItemViewState extends State<NewItemView> {
   }
 
   void save() {
-    if(textFieldController.text.isNotEmpty){
-    Navigator.of(context).pop(textFieldController.text);
+    if (textFieldController.text.isNotEmpty) {
+      Navigator.of(context).pop(textFieldController.text);
     }
   }
 }

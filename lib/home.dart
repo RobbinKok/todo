@@ -99,13 +99,14 @@ class Home extends State<HomeScreen> {
           ),
           child: Scaffold(
             appBar: TabBar(
-              tabs: [
-                Tab(text: 'Todo items'),
-                Tab(
-                  text: 'Archive',
-                )
-              ],
-            ),
+                labelColor: Theme.of(context).indicatorColor,
+                tabs: [
+                  Tab(text: 'Todo items'),
+                  Tab(
+                    text: 'Archive',
+                  )
+                ],
+                indicatorColor: Theme.of(context).accentColor),
             body: TabBarView(children: [
               list.isNotEmpty ? itemBody() : empty(),
               done.isNotEmpty ? doneBody() : empty()
@@ -344,9 +345,9 @@ class Home extends State<HomeScreen> {
         builder: (context) {
           return Container(
             color: Colors.transparent,
-            padding: EdgeInsets.only(left: 4, right: 4),
+            //padding: EdgeInsets.only(left: 4, right: 4),
             child: Container(
-              padding: EdgeInsets.only(left: 4, right: 4),
+              // padding: EdgeInsets.only(left: 4, right: 4),
               decoration: BoxDecoration(
                   color: Theme.of(context).accentColor,
                   borderRadius: BorderRadius.only(
@@ -391,9 +392,9 @@ class Home extends State<HomeScreen> {
         builder: (context) {
           return Container(
             color: Colors.transparent,
-            padding: EdgeInsets.only(left: 4, right: 4),
+            //padding: EdgeInsets.only(left: 4, right: 4),
             child: Container(
-              padding: EdgeInsets.only(left: 4, right: 4),
+              //padding: EdgeInsets.only(left: 4, right: 4),
               decoration: BoxDecoration(
                   color: Theme.of(context).accentColor,
                   borderRadius: BorderRadius.only(
