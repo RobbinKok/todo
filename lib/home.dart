@@ -312,12 +312,18 @@ class Home extends State<HomeScreen> {
     List<String> sharedPrefList =
         list.map((item) => jsonEncode(item.topMap())).toList();
     sharedPreferences.setStringList('list', sharedPrefList);
+    List<String> sharedPrefDone =
+        done.map((item) => jsonEncode(item.topMap())).toList();
+    sharedPreferences.setStringList('done', sharedPrefDone);
   }
 
   void dataLoad() {
     List<String> sharedPrefList = sharedPreferences.getStringList('list');
     list =
         sharedPrefList.map((item) => Todo.fromMap(jsonDecode(item))).toList();
+    List<String> sharedPrefDone = sharedPreferences.getStringList('done');
+    done =
+        sharedPrefDone.map((item) => Todo.fromMap(jsonDecode(item))).toList();
     setState(() {});
   }
 
