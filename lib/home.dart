@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flushbar/flushbar.dart';
 import 'todo.dart';
 import 'new_item.view.dart';
 
@@ -332,6 +333,19 @@ class Home extends State<HomeScreen> {
       Navigator.of(context).pop(textFieldController.text);
       newTodo(Todo(title: textFieldController.text));
       textFieldController.clear();
+    } else {
+      Navigator.of(context).pop(textFieldController.text);
+      Flushbar(
+        messageText: Center(
+          child: Text("Input cannot be empty"),
+        ),
+        duration: Duration(seconds: 3),
+        borderRadius: 25,
+        margin: EdgeInsets.only(bottom: 15, left: 100, right: 100),
+        borderColor: Theme.of(context).primaryColor,
+        backgroundColor: Theme.of(context).accentColor,
+        borderWidth: 2,
+      )..show(context);
     }
   }
 
