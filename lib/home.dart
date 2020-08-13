@@ -15,6 +15,7 @@ class Home extends State<HomeScreen> {
   List<Todo> done = List<Todo>();
   SharedPreferences sharedPreferences;
   TextEditingController textFieldController = TextEditingController();
+  bool theme = false;
 
   @override
   void initState() {
@@ -71,10 +72,10 @@ class Home extends State<HomeScreen> {
           ),
           IconButton(
             icon: Icon(
-              Icons.info_outline,
+              Icons.settings,
               color: Theme.of(context).textSelectionColor,
             ),
-            onPressed: () => showHelpSheet(),
+            onPressed: () => showSettingsSheet(),
           )
         ],
       ),
@@ -452,15 +453,17 @@ class Home extends State<HomeScreen> {
         });
   }
 
-  void showHelpSheet() {
+  void showSettingsSheet() {
     showModalBottomSheet(
         context: context,
         builder: (context) {
-          return Container(
-            height: 120,
-            color: Colors.transparent,
-            padding: EdgeInsets.only(left: 0, right: 0),
-            child: Container(
+          return StatefulBuilder(builder: (BuildContext context,
+              StateSetter stateSetter /*You can rename this!*/) {
+            return Container(
+              height: 120,
+              color: Colors.transparent,
+              padding: EdgeInsets.only(left: 0, right: 0),
+              child: Container(
                 padding: EdgeInsets.only(left: 0, right: 0),
                 decoration: BoxDecoration(
                   color: Theme.of(context).accentColor,
@@ -468,14 +471,59 @@ class Home extends State<HomeScreen> {
                       topLeft: Radius.circular(25),
                       topRight: Radius.circular(25)),
                 ),
-                child: Center(
-                  child: Text(
-                    'Press the + icon to add an new item.\n Swipe from left to right to delete the item \n Press and hold the new item to edit it.',
-                    style: TextStyle(fontSize: 16),
-                    textAlign: TextAlign.center,
-                  ),
-                )),
-          );
+                child: Column(
+                  children: [
+                    Center(
+                      child: Text(
+                        "Settings",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                    Divider(
+                      color: Theme.of(context).backgroundColor,
+                    ),
+                    Container(
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(
+                                left: MediaQuery.of(context).size.width * 0.04),
+                            child: Text(
+                              "Theme:",
+                              style: TextStyle(fontSize: 18),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                                left:
+                                    (MediaQuery.of(context).size.width * 0.55)),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Icon(Icons.wb_sunny),
+                                Switch(
+                                    activeTrackColor:
+                                        Theme.of(context).primaryColor,
+                                    activeColor: Theme.of(context).primaryColor,
+                                    value: theme,
+                                    onChanged: (value) {
+                                      stateSetter(() {
+                                        theme = value;
+                                      });
+                                    }),
+                                Icon(Icons.brightness_3)
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            );
+          });
         });
   }
 }
