@@ -1,7 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flushbar/flushbar.dart';
+import 'package:todo/main.dart';
+
 import 'todo.dart';
 import 'new_item.view.dart';
 
@@ -506,10 +509,12 @@ class Home extends State<HomeScreen> {
                                     activeTrackColor:
                                         Theme.of(context).primaryColor,
                                     activeColor: Theme.of(context).primaryColor,
-                                    value: theme,
+                                    value: Provider.of<AppState>(context)
+                                        .isDarkTheme,
                                     onChanged: (value) {
-                                      stateSetter(() {
-                                        theme = value;
+                                      setState(() {
+                                        Provider.of<AppState>(context)
+                                            .updateTheme(value);
                                       });
                                     }),
                                 Icon(Icons.brightness_3)

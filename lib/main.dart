@@ -1,11 +1,20 @@
 //package imports
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 //custom imports
 import 'package:todo/home.dart';
+import 'package:todo/mythemes.dart';
 
-void main() => runApp(MyApp());
+//void main() => runApp(MyApp());
+
+void main() => runApp(
+      ChangeNotifierProvider<AppState>(
+        create: (context) => AppState(),
+        child: MyApp(),
+      ),
+    );
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -15,27 +24,25 @@ class MyApp extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
         statusBarIconBrightness: Brightness.light));
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          brightness: Brightness.light,
-          primaryColor: Colors.red,
-          accentColor: Colors.white,
-          textSelectionColor: Colors.white,
-          backgroundColor: Colors.grey[300],
-          indicatorColor: Colors.grey[900],
-          canvasColor: Colors.transparent
-          //        brightness: Brightness.light
-          ),
-      darkTheme: ThemeData(
-          brightness: Brightness.dark,
-          primaryColor: Colors.red,
-          textSelectionColor: Colors.white,
-          accentColor: Colors.grey[800],
-          backgroundColor: Colors.grey[900],
-          indicatorColor: Colors.white,
-          canvasColor: Colors.transparent),
-      home: HomeScreen(),
+    return Consumer<AppState>(
+      builder: (context, appState, _) {
+        return MaterialApp(
+          theme: MyThemes.lightTheme,
+          darkTheme: MyThemes.darkTheme,
+          themeMode: appState.isDarkTheme ? ThemeMode.dark : ThemeMode.light,
+          debugShowCheckedModeBanner: false,
+          home: HomeScreen(),
+        );
+      },
     );
+  }
+}
+
+class AppState extends ChangeNotifier {
+  bool isDarkTheme = false;
+
+  void updateTheme(bool isDarkTheme) {
+    this.isDarkTheme = isDarkTheme;
+    notifyListeners();
   }
 }
