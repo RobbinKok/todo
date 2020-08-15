@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum MyThemesKeys { LIGHT, DARK }
 
@@ -22,18 +23,40 @@ class MyThemes {
       backgroundColor: Colors.grey[900],
       indicatorColor: Colors.white,
       canvasColor: Colors.transparent);
+}
 
-  static ThemeData getThemeFromKey(MyThemesKeys themesKeys) {
-    switch (themesKeys) {
-      case MyThemesKeys.LIGHT:
-        return lightTheme;
-        break;
-      case MyThemesKeys.DARK:
-        return darkTheme;
-        break;
+class ThemeNotifier extends ChangeNotifier {
+  final String key = "theme";
+  SharedPreferences _pref;
+  bool _darktheme;
 
-      default:
-        return lightTheme;
+  bool get darkTheme => _darktheme;
+
+  ThemeNotifier() {
+    _darktheme = true;
+    _loadFromPrefs();
+  }
+
+  toggleTheme() {
+    _darktheme = !_darktheme;
+    _saveToPrefs();
+    notifyListeners();
+  }
+
+  _initPrefs() async {
+    if (_pref == null) {
+      _pref = await SharedPreferences.getInstance();
     }
+  }
+
+  _loadFromPrefs() async {
+    await _initPrefs();
+    _darktheme = _pref.getBool(key) ?? true;
+    notifyListeners();
+  }
+
+  _saveToPrefs() async {
+    await _initPrefs();
+    _pref.setBool(key, _darktheme);
   }
 }

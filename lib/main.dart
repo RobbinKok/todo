@@ -10,10 +10,7 @@ import 'package:todo/mythemes.dart';
 //void main() => runApp(MyApp());
 
 void main() => runApp(
-      ChangeNotifierProvider<AppState>(
-        create: (context) => AppState(),
-        child: MyApp(),
-      ),
+      MyApp(),
     );
 
 class MyApp extends StatelessWidget {
@@ -24,25 +21,15 @@ class MyApp extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
         statusBarIconBrightness: Brightness.light));
-    return Consumer<AppState>(
-      builder: (context, appState, _) {
+    return ChangeNotifierProvider(
+      create: (_) => ThemeNotifier(),
+      child: Consumer<ThemeNotifier>(
+          builder: (context, ThemeNotifier notifier, child) {
         return MaterialApp(
-          theme: MyThemes.lightTheme,
-          darkTheme: MyThemes.darkTheme,
-          themeMode: appState.isDarkTheme ? ThemeMode.dark : ThemeMode.light,
-          debugShowCheckedModeBanner: false,
+          theme: notifier.darkTheme ? MyThemes.darkTheme : MyThemes.lightTheme,
           home: HomeScreen(),
         );
-      },
+      }),
     );
-  }
-}
-
-class AppState extends ChangeNotifier {
-  bool isDarkTheme = false;
-
-  void updateTheme(bool isDarkTheme) {
-    this.isDarkTheme = isDarkTheme;
-    notifyListeners();
   }
 }

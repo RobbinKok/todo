@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flushbar/flushbar.dart';
-import 'package:todo/main.dart';
+import 'package:todo/mythemes.dart';
 
 import 'todo.dart';
 import 'new_item.view.dart';
@@ -18,7 +18,6 @@ class Home extends State<HomeScreen> {
   List<Todo> done = List<Todo>();
   SharedPreferences sharedPreferences;
   TextEditingController textFieldController = TextEditingController();
-  bool theme = false;
 
   @override
   void initState() {
@@ -313,7 +312,7 @@ class Home extends State<HomeScreen> {
     dataSave();
   }
 
-  void dataSave() {
+  void dataSave() async {
     List<String> sharedPrefList =
         list.map((item) => jsonEncode(item.topMap())).toList();
     sharedPreferences.setStringList('list', sharedPrefList);
@@ -322,7 +321,7 @@ class Home extends State<HomeScreen> {
     sharedPreferences.setStringList('done', sharedPrefDone);
   }
 
-  void dataLoad() {
+  void dataLoad() async {
     List<String> sharedPrefList = sharedPreferences.getStringList('list');
     list =
         sharedPrefList.map((item) => Todo.fromMap(jsonDecode(item))).toList();
@@ -505,18 +504,19 @@ class Home extends State<HomeScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Icon(Icons.wb_sunny),
-                                Switch(
-                                    activeTrackColor:
-                                        Theme.of(context).primaryColor,
-                                    activeColor: Theme.of(context).primaryColor,
-                                    value: Provider.of<AppState>(context)
-                                        .isDarkTheme,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        Provider.of<AppState>(context)
-                                            .updateTheme(value);
-                                      });
-                                    }),
+                                Consumer<ThemeNotifier>(
+                                  builder: (context, notifier, child) => Switch(
+                                      activeTrackColor:
+                                          Theme.of(context).primaryColor,
+                                      activeColor:
+                                          Theme.of(context).primaryColor,
+                                      value: notifier.darkTheme,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          notifier.toggleTheme();
+                                        });
+                                      }),
+                                ),
                                 Icon(Icons.brightness_3)
                               ],
                             ),
